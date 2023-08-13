@@ -31,12 +31,17 @@ namespace users.Controllers {
             .ToArray();
         }*/
 
+        //Get All
+        //Valid token
+        //createLogginAction
+
         [HttpGet("{email}")]
         public async Task<IActionResult> FindOne(string Email) {
             if(!Validator.IsValidEmail(Email)) return BadRequest(new { message = "Email invalid"});
             User user = await _usersService.FindOne(Email);
             return Ok(new { message = "Request success", data = user} );
         }
+
         [HttpGet("history/{id}/{dateAction}")]
         public async Task<IActionResult> GetUserAction(string id, string dateAction) {
             IEnumerable<LoggingActions> logginActions = await _usersService.UserAction(id, dateAction);

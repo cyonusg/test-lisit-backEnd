@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace bff.Models
+namespace bff.Models.Requests
 {
-    public class RequestAuth
+    public class RequestLogin
     {
         /// <summary>
-        /// User email
+        /// User email to login
         /// </summary>
         public required string Email { get; set; }
         /// <summary>
