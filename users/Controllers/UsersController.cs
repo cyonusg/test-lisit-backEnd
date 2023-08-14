@@ -31,9 +31,14 @@ namespace users.Controllers {
             .ToArray();
         }*/
 
-        //Get All
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            IEnumerable<User> users = await _usersService.FindAll();
+            return Ok(new { message = "Request success", data = users} );
+        }
+        
         //Valid token
-        //createLogginAction
 
         [HttpGet("{email}")]
         public async Task<IActionResult> FindOne(string Email) {
@@ -48,10 +53,16 @@ namespace users.Controllers {
             return Ok(new { message = "Request success", data = logginActions} );
         }
 
+        [HttpPost("history")]
+        public async Task<IActionResult> CreateUserAction(RequestCreateLogging request) {
+            await _usersService.CreateUserAction(request);
+            return Ok(new { message = "Request success"} );
+        }
+
         [HttpPost]
-        public async Task<IActionResult> Post ( CreateRequest Request) {
-            if(!Validator.IsValidEmail(Request.Email)) return BadRequest(new { message = "Email invalid"});
-            await _usersService.Create(Request);
+        public async Task<IActionResult> Post ( CreateRequest request) {
+            if(!Validator.IsValidEmail(request.Email)) return BadRequest(new { message = "Email invalid"});
+            await _usersService.Create(request);
             return Ok(new { message = "User created" });
         }
 

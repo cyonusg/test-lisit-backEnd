@@ -14,6 +14,7 @@ namespace users.Helpers
     {
         // CreateRequest -> User
         CreateMap<CreateRequest, User>();
+        CreateMap<RequestCreateLogging, LoggingActions>();
 
         // UpdateRequest -> User
         /*CreateMap<UpdateRequest, User>()

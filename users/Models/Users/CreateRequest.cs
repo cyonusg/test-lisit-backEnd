@@ -38,11 +38,5 @@ namespace users.Models.Users
         [Required]
         public required string CommuneId { get; set; }
 
-       /* [Required]
-        [Compare("Password")]
-        /// <summary>
-        /// Confirm Password
-        /// </summary>
-        public string? ConfirmPassword { get; set; }*/
     }
 }

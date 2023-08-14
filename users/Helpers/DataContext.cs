@@ -49,14 +49,17 @@ namespace users.Helpers
         async Task _initUsers()
         {
             var sql = """
-                CREATE TABLE IF NOT EXISTS Users (
-                    Id VARCHAR(100) PRIMARY KEY,
+                CREATE TABLE IF NOT EXISTS users (
+                    Id VARCHAR(50) PRIMARY KEY,
                     Name VARCHAR(100),
                     LastName VARCHAR(100),
                     Email VARCHAR(50),
                     Role INTEGER,
-                    CommuneId VARCHAR(100),
-                    PasswordHash VARCHAR(200));
+                    CommuneId VARCHAR(50),
+                    PasswordHash VARCHAR(200),
+                    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    DeletedAt TIMESTAMP);
             """;
             await connection.ExecuteAsync(sql);
         }
@@ -64,11 +67,11 @@ namespace users.Helpers
         async Task _initUsersLogs()
         {
             var sql = """
-                CREATE TABLE IF NOT EXISTS UsersLog (
+                CREATE TABLE IF NOT EXISTS userslog (
                     Id VARCHAR(100) PRIMARY KEY,
                     Type VARCHAR(20),
                     Description TEXT,
-                    UserId VARCHAR(100),
+                    UserId VARCHAR(50),
                     CreatedAt TIMESTAMP);
             """;
             await connection.ExecuteAsync(sql);

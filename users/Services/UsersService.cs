@@ -35,6 +35,11 @@ namespace users.Services
             await _userRepository.Create(user);
         }
 
+        public async Task<IEnumerable<User>> FindAll()
+        {
+            return await _userRepository.GetAll();
+        }
+
         public async Task<User> FindOne(string email) {
                 LoggingActions action = new() {
                 Type = "GEt",
@@ -66,8 +71,12 @@ namespace users.Services
         }
         
         public async Task<IEnumerable<LoggingActions>> UserAction (string id, string dateAction) {
-           IEnumerable<LoggingActions> actions = await _userRepository.GetLoggingAction(id, dateAction);
+            IEnumerable<LoggingActions> actions = await _userRepository.GetLoggingAction(id, dateAction);
             return actions;
+        }
+        public async Task CreateUserAction (RequestCreateLogging request) {
+            LoggingActions action = _mapper.Map<LoggingActions>(request);
+            await _userRepository.LoggingAction(action);
         }
     }
 
@@ -75,7 +84,8 @@ namespace users.Services
         Task Create(CreateRequest model);
         Task<User> Login(string email, string password);
         Task<User> FindOne(string email);
-
+        Task<IEnumerable<User>> FindAll();
         Task<IEnumerable<LoggingActions>> UserAction (string email, string dateAction);
+        Task CreateUserAction (RequestCreateLogging request);
     }
 }

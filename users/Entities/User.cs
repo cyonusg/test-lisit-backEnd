@@ -47,5 +47,20 @@ namespace users.Entities
 
         public required string CommuneId { get; set; }
 
+       /// <summary>
+        /// Create Date
+        /// </summary>
+
+        public required DateTime CreatedAt { get; set; }
+
+        /// <summary>
+        /// Update Date
+        /// </summary>
+        public DateTime? UpdatedAt { get; set; }
+
+        /// <summary>
+        /// Delete Date
+        /// </summary>
+        public DateTime? DeletedAt { get; set; }
     }
 }
