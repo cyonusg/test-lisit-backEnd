@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: lisit
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: users
+      PGDATA: /var/lib/postgresqlLisit/data/postgres/
+    ports:
+      - "5432:5432"
+    volumes:
+      - .:/var/lib/postgresql/data
+    networks:
+      - internal_network
+
   users-api:
     build:
       context: ./users
@@ -28,6 +43,7 @@ services:
       - internal_network
     depends_on:
       - db
+      - users-api
   
   bff-api:
     build:
@@ -42,20 +58,6 @@ services:
       - location-api
       - social-help-api
 
-  db:
-    image: postgres:14.1-alpine
-    restart: always
-    environment:
-      POSTGRES_USER: lisit
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: users
-      PGDATA: /var/lib/postgresqlLisit/data/postgres/
-    ports:
-      - "5432:5432"
-    volumes:
-      - .:/var/lib/postgresql/data
-    networks:
-      - internal_network
 volumes:
   db:
     driver: local
