@@ -22,7 +22,7 @@ namespace bff.Services
     }
     public class LocationsService : ILocationsService
     {
-        private static readonly string BaseUrl = "https://localhost:7146/";
+        private static readonly string BaseUrl = "http://location-api:80/";
         private static readonly string Country = "country";
         private static readonly string Region = "region";
         private static readonly string Commune = "Commune";

@@ -25,6 +25,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // configure strongly typed settings object
 builder.Services.Configure<DbSettings>(builder.Configuration.GetSection("DbSettings"));
+builder.Services.Configure<ServicesSettings>(builder.Configuration.GetSection("ServicesSettings"));
 
 // configure DI for application services
 builder.Services.AddSingleton<DataContext>();

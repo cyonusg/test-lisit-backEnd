@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  users-api:
+    build:
+      context: ./users
+      dockerfile: Dockerfile
+    networks:
+      - internal_network
+    depends_on:
+      - db
+
+  location-api:
+    build:
+      context: ./location
+      dockerfile: Dockerfile
+    networks:
+      - internal_network
+    depends_on:
+      - db
+      - users-api
+
+  social-help-api:
+    build:
+      context: ./socialHelp
+      dockerfile: Dockerfile
+    networks:
+      - internal_network
+    depends_on:
+      - db
+  
+  bff-api:
+    build:
+      context: ./bff
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - internal_network
+    depends_on:
+      - users-api
+      - location-api
+      - social-help-api
+
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: lisit
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: users
+      PGDATA: /var/lib/postgresqlLisit/data/postgres/
+    ports:
+      - "5432:5432"
+    volumes:
+      - .:/var/lib/postgresql/data
+    networks:
+      - internal_network
+volumes:
+  db:
+    driver: local
+networks:
+  internal_network:
+    driver: bridge

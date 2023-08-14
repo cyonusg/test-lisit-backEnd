@@ -7,7 +7,7 @@ using bff.Entities;
 
 namespace bff.Models.Responses
 {
-    public class ResponseGetRegions
+    public class ResponseGetRegions: ResponseMicroServices
     {
         [JsonPropertyName("data")]
         public IList<Region>? Data { get; set; }

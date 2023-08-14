@@ -17,12 +17,12 @@ namespace bff.Services
     }
     public class UsersService : IUsersService
     {
-        private static readonly string BaseUrl = "https://localhost:7146/";
+        private ServicesSettings _servicesSettings;
+        private static string BaseUrl = "http://users-api:80/";
         private static readonly string Users = "users";
         private static readonly string Auth = "auth";
 
         private readonly HttpClient _httpClient;
-        private readonly JsonSerializerOptions _options;
         public UsersService(HttpClient httpClientFactory)
         {
             _httpClient = httpClientFactory;

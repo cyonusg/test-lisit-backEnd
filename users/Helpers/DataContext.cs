@@ -15,7 +15,7 @@ namespace users.Helpers
 
     public IDbConnection CreateConnection()
     {
-        var connectionString = $"Host={_dbSettings.Server}; Port=5433; Database={_dbSettings.Database}; Username={_dbSettings.UserId}; Password={_dbSettings.Password};";
+        var connectionString = $"Host={_dbSettings.Server}; Port={_dbSettings.Port}; Database={_dbSettings.Database}; Username={_dbSettings.UserId}; Password={_dbSettings.Password};";
         return new NpgsqlConnection(connectionString);
     }
 
@@ -28,7 +28,7 @@ namespace users.Helpers
     private async Task _initDatabase()
     {
         // create database if it doesn't exist
-        var connectionString = $"Host={_dbSettings.Server};  Port=5433; Database=postgres; Username={_dbSettings.UserId}; Password={_dbSettings.Password};";
+        var connectionString = $"Host={_dbSettings.Server};  Port={_dbSettings.Port}; Database=postgres; Username={_dbSettings.UserId}; Password={_dbSettings.Password};";
         using var connection = new NpgsqlConnection(connectionString);
         var sqlDbCount = $"SELECT COUNT(*) FROM pg_database WHERE datname = '{_dbSettings.Database}';";
         var dbCount = await connection.ExecuteScalarAsync<int>(sqlDbCount);

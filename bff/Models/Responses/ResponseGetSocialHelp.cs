@@ -3,9 +3,9 @@ using bff.Entities;
 
 namespace bff.Models.Responses
 {
-    public class ResponseGetRegion: ResponseMicroServices
+    public class ResponseGetSocialHelp: ResponseMicroServices
     {
         [JsonPropertyName("data")]
-        public Region? Data { get; set; }
+        public SocialHelp? Data {get; set;}
     }
 }
