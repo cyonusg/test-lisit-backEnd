@@ -12,87 +12,99 @@ namespace bff.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UsersController: ControllerBase {
+    public class RegionController : ControllerBase
+    {
 
+        readonly ILocationsService _locationsService;
         readonly IUsersService _usersService;
+
         
-        public UsersController(IUsersService users) {
+        public RegionController(ILocationsService locationService, IUsersService users) {
+            _locationsService = locationService;
             _usersService = users;
+
         }
 
-        [HttpGet("history/{id}/{dateAction}")]
-        public async Task<ResponseLogginUser> GetUserAction(string id, string dateAction) {
+        [HttpGet]
+        public async Task<ResponseGetRegions> GetAll()
+        {
             Dictionary<string, string> header = new Dictionary<string, string>{
                 { "User-Agent", "HttpClientExample" },
                 { "Accept", "application/json" },
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
-            ResponseLogginUser logginActions = await _usersService.GetUserAction(id, dateAction, header);
+            ResponseGetRegions countries = await _locationsService.RegionFindAll(header);
+
             RequestLogging action = new() {
                 Type = "Get",
-                Description = "Request Get Actions for user" + id,
+                Description = "Request Get all Region ",
                 UserId = "ssss-sssss-ssss-"
             };
             await _usersService.CreateUserAction(action, header);
-            return logginActions;
+            return countries;
         }
 
-        [HttpGet("{email}")]
-        public async Task<ResponseGetUser> FindOne(string email) {
+        [HttpGet("{id}")]
+        public async Task<ResponseGetRegion> GetById(string id)
+        {
             Dictionary<string, string> header = new Dictionary<string, string>{
                 { "User-Agent", "HttpClientExample" },
                 { "Accept", "application/json" },
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
-            ResponseGetUser user = await _usersService.FindOne(email, header);
+            ResponseGetRegion Region = await _locationsService.RegionFindOne(id, header);
 
             RequestLogging action = new() {
                 Type = "Get",
-                Description = "Request Get user" + email,
+                Description = "Request Get one Region " + id,
                 UserId = "ssss-sssss-ssss-"
             };
             await _usersService.CreateUserAction(action, header);
-            return user;
+            return Region;
         }
 
         [HttpPost]
-        public async Task<ResponseMicroServices> Post ( RequestCreateUser Request) {
+        public async Task<ResponseMicroServices> Create(RequestCreateRegion model)
+        {
             Dictionary<string, string> header = new Dictionary<string, string>{
                 { "User-Agent", "HttpClientExample" },
                 { "Accept", "application/json" },
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
+            ResponseMicroServices response = await _locationsService.RegionCreate(model, header);
 
             RequestLogging action = new() {
                 Type = "create",
-                Description = "Request to Create user" + Request.Email,
+                Description = "Request create Region ",
                 UserId = "ssss-sssss-ssss-"
             };
             await _usersService.CreateUserAction(action, header);
-            return await _usersService.Create(Request, header);
+            return response;
         }
 
-        [HttpPatch]
-        public IActionResult patch (string email) {
-            return NotFound(new { message = "No scope Test"});
-        }
+        /*[HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, UpdateRequest model)
+        {
+            await _userService.Update(id, model);
+            return Ok(new { message = "Region updated" });
+        }*/
 
-        [HttpDelete("{email}")]
-        public async Task<ResponseMicroServices> Delete (string email) {
+        [HttpDelete("{id}")]
+        public async Task<ResponseMicroServices> Delete(string id)
+        {
             Dictionary<string, string> header = new Dictionary<string, string>{
                 { "User-Agent", "HttpClientExample" },
                 { "Accept", "application/json" },
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
-            ResponseMicroServices response =  await _usersService.Delete(email, header);
+            ResponseMicroServices response = await _locationsService.RegionDelete(id, header);
 
             RequestLogging action = new() {
                 Type = "delete",
-                Description = "Request to Delete user" + email,
+                Description = "Request delete Region ",
                 UserId = "ssss-sssss-ssss-"
             };
             await _usersService.CreateUserAction(action, header);
-
             return response;
         }
     }

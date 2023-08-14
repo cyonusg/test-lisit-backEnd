@@ -16,9 +16,13 @@ namespace bff.Controllers
     {
 
         readonly ILocationsService _locationsService;
+        readonly IUsersService _usersService;
+
         
-        public CountryController(ILocationsService locationService) {
+        public CountryController(ILocationsService locationService, IUsersService users) {
             _locationsService = locationService;
+            _usersService = users;
+
         }
 
         [HttpGet]
@@ -30,6 +34,13 @@ namespace bff.Controllers
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
             ResponseGetCountries countries = await _locationsService.CountryFindAll(header);
+
+            RequestLogging action = new() {
+                Type = "Get",
+                Description = "Request Get all Country ",
+                UserId = "ssss-sssss-ssss-"
+            };
+            await _usersService.CreateUserAction(action, header);
             return countries;
         }
 
@@ -42,6 +53,13 @@ namespace bff.Controllers
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
             ResponseGetCountry country = await _locationsService.CountryFindOne(id, header);
+
+            RequestLogging action = new() {
+                Type = "Get",
+                Description = "Request Get one Country " + id,
+                UserId = "ssss-sssss-ssss-"
+            };
+            await _usersService.CreateUserAction(action, header);
             return country;
         }
 
@@ -54,6 +72,13 @@ namespace bff.Controllers
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
             ResponseMicroServices response = await _locationsService.CountryCreate(model, header);
+
+            RequestLogging action = new() {
+                Type = "create",
+                Description = "Request create Country ",
+                UserId = "ssss-sssss-ssss-"
+            };
+            await _usersService.CreateUserAction(action, header);
             return response;
         }
 
@@ -73,6 +98,13 @@ namespace bff.Controllers
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
             ResponseMicroServices response = await _locationsService.CountryDelete(id, header);
+
+            RequestLogging action = new() {
+                Type = "delete",
+                Description = "Request delete Country ",
+                UserId = "ssss-sssss-ssss-"
+            };
+            await _usersService.CreateUserAction(action, header);
             return response;
         }
     }

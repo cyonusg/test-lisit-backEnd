@@ -12,87 +12,97 @@ namespace bff.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UsersController: ControllerBase {
-
+    public class CommuneController : ControllerBase
+    {
+        readonly ILocationsService _locationsService;
         readonly IUsersService _usersService;
-        
-        public UsersController(IUsersService users) {
+
+        public CommuneController(ILocationsService locationService, IUsersService users) {
+            _locationsService = locationService;
             _usersService = users;
         }
 
-        [HttpGet("history/{id}/{dateAction}")]
-        public async Task<ResponseLogginUser> GetUserAction(string id, string dateAction) {
+
+        [HttpGet]
+        public async Task<ResponseGetCommunes> GetAll()
+        {
             Dictionary<string, string> header = new Dictionary<string, string>{
                 { "User-Agent", "HttpClientExample" },
                 { "Accept", "application/json" },
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
-            ResponseLogginUser logginActions = await _usersService.GetUserAction(id, dateAction, header);
+            ResponseGetCommunes countries = await _locationsService.CommuneFindAll(header);
+
             RequestLogging action = new() {
                 Type = "Get",
-                Description = "Request Get Actions for user" + id,
+                Description = "Request Get all Commune ",
                 UserId = "ssss-sssss-ssss-"
             };
             await _usersService.CreateUserAction(action, header);
-            return logginActions;
+            return countries;
         }
 
-        [HttpGet("{email}")]
-        public async Task<ResponseGetUser> FindOne(string email) {
+        [HttpGet("{id}")]
+        public async Task<ResponseGetCommune> GetById(string id)
+        {
             Dictionary<string, string> header = new Dictionary<string, string>{
                 { "User-Agent", "HttpClientExample" },
                 { "Accept", "application/json" },
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
-            ResponseGetUser user = await _usersService.FindOne(email, header);
+            ResponseGetCommune Commune = await _locationsService.CommuneFindOne(id, header);
 
             RequestLogging action = new() {
                 Type = "Get",
-                Description = "Request Get user" + email,
+                Description = "Request Get one Commune " + id,
                 UserId = "ssss-sssss-ssss-"
             };
             await _usersService.CreateUserAction(action, header);
-            return user;
+            return Commune;
         }
 
         [HttpPost]
-        public async Task<ResponseMicroServices> Post ( RequestCreateUser Request) {
+        public async Task<ResponseMicroServices> Create(RequestCreateCommune model)
+        {
             Dictionary<string, string> header = new Dictionary<string, string>{
                 { "User-Agent", "HttpClientExample" },
                 { "Accept", "application/json" },
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
+            ResponseMicroServices response = await _locationsService.CommuneCreate(model, header);
 
             RequestLogging action = new() {
                 Type = "create",
-                Description = "Request to Create user" + Request.Email,
+                Description = "Request create Commune ",
                 UserId = "ssss-sssss-ssss-"
             };
             await _usersService.CreateUserAction(action, header);
-            return await _usersService.Create(Request, header);
+            return response;
         }
 
-        [HttpPatch]
-        public IActionResult patch (string email) {
-            return NotFound(new { message = "No scope Test"});
-        }
+        /*[HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, UpdateRequest model)
+        {
+            await _userService.Update(id, model);
+            return Ok(new { message = "Commune updated" });
+        }*/
 
-        [HttpDelete("{email}")]
-        public async Task<ResponseMicroServices> Delete (string email) {
+        [HttpDelete("{id}")]
+        public async Task<ResponseMicroServices> Delete(string id)
+        {
             Dictionary<string, string> header = new Dictionary<string, string>{
                 { "User-Agent", "HttpClientExample" },
                 { "Accept", "application/json" },
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
-            ResponseMicroServices response =  await _usersService.Delete(email, header);
+            ResponseMicroServices response = await _locationsService.CommuneDelete(id, header);
 
             RequestLogging action = new() {
                 Type = "delete",
-                Description = "Request to Delete user" + email,
+                Description = "Request delete Commune ",
                 UserId = "ssss-sssss-ssss-"
             };
             await _usersService.CreateUserAction(action, header);
-
             return response;
         }
     }

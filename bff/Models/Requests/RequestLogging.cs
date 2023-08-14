@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace users.Models.Users
+namespace bff.Models.Requests
 {
-    public class RequestCreateLogging
+    public class RequestLogging
     {
         /// <summary>
         /// Type of Actions Create/Update/Delete/Login

@@ -11,9 +11,12 @@ namespace bff.Controllers
     public class SocialHelpController : ControllerBase
     {
         readonly ISocialHelpService _socialHelpService;
+        readonly IUsersService _usersService;
+
         
-        public SocialHelpController(ISocialHelpService socialHelpService) {
+        public SocialHelpController(ISocialHelpService socialHelpService, IUsersService users) {
             _socialHelpService = socialHelpService;
+            _usersService = users;
         }
 
 
@@ -26,6 +29,13 @@ namespace bff.Controllers
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
             ResponseGetSocialHelps socialHelps = await _socialHelpService.FindAll(header);
+
+            RequestLogging action = new() {
+                Type = "Get",
+                Description = "Request Get all Social helps ",
+                UserId = "ssss-sssss-ssss-"
+            };
+            await _usersService.CreateUserAction(action, header);
             return socialHelps;
         }
 
@@ -38,6 +48,14 @@ namespace bff.Controllers
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
             ResponseGetSocialHelp socialHelp = await _socialHelpService.FindOne(id, header);
+
+
+            RequestLogging action = new() {
+                Type = "Get",
+                Description = "Request Get one Social helps " + id,
+                UserId = "ssss-sssss-ssss-"
+            };
+            await _usersService.CreateUserAction(action, header);
             return socialHelp;
         }
 
@@ -54,6 +72,14 @@ namespace bff.Controllers
                 UserId = userId
             };
             ResponseMicroServices response = await _socialHelpService.CreateBeneficiaries(model, header);
+
+
+            RequestLogging action = new() {
+                Type = "create",
+                Description = "Request create beneficiaries  Social helps " + model.SocialHelpId,
+                UserId = "ssss-sssss-ssss-"
+            };
+            await _usersService.CreateUserAction(action, header);
             return response;
         }
 
@@ -70,6 +96,12 @@ namespace bff.Controllers
                 UserId = userId
             };
             ResponseMicroServices response = await _socialHelpService.DeleteBeneficiaries(model, header);
+                RequestLogging action = new() {
+                Type = "delete",
+                Description = "Request Delete beneficiaries  Social helps " + model.SocialHelpId,
+                UserId = "ssss-sssss-ssss-"
+            };
+            await _usersService.CreateUserAction(action, header);
             return response;
         }
 
@@ -82,6 +114,13 @@ namespace bff.Controllers
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
             ResponseMicroServices response = await _socialHelpService.Create(model, header);
+
+            RequestLogging action = new() {
+                Type = "create",
+                Description = "Request create Social helps ",
+                UserId = "ssss-sssss-ssss-"
+            };
+            await _usersService.CreateUserAction(action, header);
             return response;
         }
 
@@ -101,6 +140,14 @@ namespace bff.Controllers
                 { "Authorization", "Bearer YOUR_JWT_TOKEN" }  // Reemplaza con tu token JWT
             };
             ResponseMicroServices response = await _socialHelpService.Delete(id, header);
+
+            
+            RequestLogging action = new() {
+                Type = "delete",
+                Description = "Request delete Social helps" + id,
+                UserId = "ssss-sssss-ssss-"
+            };
+            await _usersService.CreateUserAction(action, header);
             return response;
         }
     }
