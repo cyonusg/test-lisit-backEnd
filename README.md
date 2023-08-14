@@ -16,7 +16,7 @@ php artisan migrate --seed
 ```
 Ahora podemos Realizar consultar al API a traves de
 ## http://localhost:8080
-Para ver Colleccion de Request hacer click [Aqui]()
+Para ver Colleccion de Request hacer click [Aqui](https://api.postman.com/collections/3565570-f4a14e9a-17be-48e0-889d-fa6596d8542d?access_key=PMAT-01H7SJQX29RETEM1CEZK4769WE)
 
 ## Estructura del proyecto
    1.- Bff (backEnd for frontend)
