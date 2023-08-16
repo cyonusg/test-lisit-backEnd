@@ -62,18 +62,18 @@ namespace bff.Services
             return data ?? new ResponseGetUser { };
         }
 
-            public async Task<ResponseGetUsers> FindAll(Dictionary<string, string> header) {
-                string requestUri = $"{BaseUrl}{Users}";
+        public async Task<ResponseGetUsers> FindAll(Dictionary<string, string> header) {
+            string requestUri = $"{BaseUrl}{Users}";
 
-                HttpClient client = _httpClient;
-                client.BaseAddress = new Uri(BaseUrl);
-                HttpResponseMessage response = await client.GetAsync(requestUri);
-                string content = await response.Content.ReadAsStringAsync();
+            HttpClient client = _httpClient;
+            client.BaseAddress = new Uri(BaseUrl);
+            HttpResponseMessage response = await client.GetAsync(requestUri);
+            string content = await response.Content.ReadAsStringAsync();
 
-                ResponseGetUsers data = JsonSerializer.Deserialize<ResponseGetUsers>(content, _options);
+            ResponseGetUsers data = JsonSerializer.Deserialize<ResponseGetUsers>(content, _options);
 
-                return data ?? new ResponseGetUsers { };
-            }
+            return data ?? new ResponseGetUsers { };
+        }
         public async Task<ResponseLogginUser> GetUserAction(string id, string dateAction, Dictionary<string, string> header)
         {
             string requestUri = $"{BaseUrl}{Users}/history/{id}/{dateAction}";
@@ -96,7 +96,7 @@ namespace bff.Services
 
             HttpClient client = _httpClient;
             client.BaseAddress = new Uri(BaseUrl);
-
+            
             var payload = JsonSerializer.Serialize(request);
             HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
 

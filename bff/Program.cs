@@ -12,6 +12,10 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddHttpClient<IUsersService, UsersService>()
     .SetHandlerLifetime(TimeSpan.FromMinutes(5));
+builder.Services.AddHttpClient<ILocationsService, LocationsService>()
+    .SetHandlerLifetime(TimeSpan.FromMinutes(5));
+builder.Services.AddHttpClient<ISocialHelpService, SocialHelpService>()
+    .SetHandlerLifetime(TimeSpan.FromMinutes(5));
 
 var app = builder.Build();
 // configure HTTP request pipeline

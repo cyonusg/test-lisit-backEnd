@@ -66,10 +66,10 @@ namespace bff.Services
 
                 HttpClient client = _httpClient;
                 client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Clear();
 
                 var payload = JsonSerializer.Serialize(location);
                 HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
-
                 HttpResponseMessage response = await client.PostAsync(requestUri, content);
                 string reponseJson = await response.Content.ReadAsStringAsync();
 

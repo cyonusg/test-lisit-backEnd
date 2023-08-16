@@ -8,6 +8,6 @@ namespace bff.Models.Responses
 {
     public class ResponseGetCountries : ResponseMicroServices
     {
-        public IList<Country>? Data { get; set; }
+        public string? Data { get; set; }
     }
 }
